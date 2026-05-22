@@ -1,0 +1,106 @@
+import React, { useContext, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import axios from 'axios'
+import { ThemeContext } from '../../App'
+//setting css use inside
+
+const EmailUpdate = () => {
+
+    const Navigate = useNavigate()
+    const URL = process.env.REACT_APP_SERVER_URL
+    const { token } = useContext(ThemeContext)
+    const [isActive, setisActive] = useState(false)
+    const [callOnce, setcallOnce] = useState(false)
+    const [isotp, setisotp] = useState(false) //is otp send or not
+
+    const [newmail, setnewmail] = useState({
+        email: '',
+        otp: ''
+    })
+
+    const handlechange = (e) => {
+        const { name, value } = e.target
+        setnewmail(prev => ({ ...prev, [name]: value }))
+        setcallOnce(true)
+    }
+
+    const handleemail = async (e) => {
+        e.preventDefault()
+        if (!callOnce) return;
+        if (!newmail?.email) return alert('Enter a new email to proceed')
+        try {
+            setcallOnce(false)
+            const res = await axios.post(`${URL}/requestotp`, {}, {
+                headers: { Authorization: `Bearer ${token}` }
+            })
+            setcallOnce(true)
+            setisotp(true)
+        } catch (error) {
+            const status = error?.response?.status
+            if (status === 404 || status === 500) {
+                alert(error?.response?.data?.message)
+            }
+            setcallOnce(true)
+        }
+    }
+
+    const verifyOtp = async () => {
+        if (!callOnce) return;
+        const isempty = Object.values(newmail).some(val => val === '' || val === undefined || val === null)
+        if (isempty) return alert('Email and otp cannot be empty')
+        try {
+            setcallOnce(false)
+            const res = await axios.patch(`${URL}/requestEmailupdate`, { newmail }, {
+                headers: { Authorization: `Bearer ${token}` }
+            })
+            setTimeout(() => {
+                window.location.reload()
+            }, (2000));
+        } catch (error) {
+            const status = error?.response?.status
+            if (status === 404 || status === 400 || status === 500) {
+                alert(error?.response?.data?.message)
+            }
+            setcallOnce(true)
+        }
+    }
+
+    return (
+        <div className='email-update-page'>
+
+            <div id='go-back-sec'>
+                <p onClick={() => Navigate(-1)}>Setting</p>
+                <span>/</span>
+                <p>Email address</p>
+            </div>
+
+            <div className='email-main-sec'>
+                <div className='child-email-main-sec'>
+                    <div className='email-content'>
+                        <div className='title-email'>
+                            <h3>Email</h3>
+                            <p>example@gmail.com</p>
+                        </div>
+                        <button id='editbtn' onClick={() => setisActive(prev => !prev)}>{!isActive ? 'Edit' : 'Cancel'}</button>
+                    </div>
+                    {
+                        isActive && <div>
+                            {
+                                !isotp ? <div className='email-form'>
+                                    < input type="email" name="email" id="" onChange={handlechange} placeholder='Enter new email address' />
+                                    <button onClick={handleemail} style={{ cursor: callOnce ? 'pointer' : 'not-allowed' }}>Save</button>
+                                </div> : <div className='email-form'>
+                                    <input type="number" name="otp" id="" maxLength={6} onChange={handlechange} placeholder='Enter 6 digit otp' style={{ textAlign: 'center' }} />
+                                    <button onClick={verifyOtp}>Confirm</button>
+                                </div>
+                            }
+                        </div>
+                    }
+                </div>
+            </div>
+
+        </div >
+    )
+}
+
+export default EmailUpdate

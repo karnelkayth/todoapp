@@ -1,0 +1,24 @@
+.userpanel{
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.child-panel{
+    width: 97%;
+    height: 94%;
+    display: flex;
+    justify-content: space-between;
+}
+.panel-left-side{
+    width: 100px;
+    height: 100%;
+}
+.panel-right-side{
+    width: calc(100% - 130px);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}

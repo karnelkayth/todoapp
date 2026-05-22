@@ -1,0 +1,135 @@
+.contact-support {
+    width: 400px;
+    padding: 10px;
+    height: calc(100vh - 20px);
+}
+
+.cs-go-back {
+    display: flex;
+    align-items: center;
+}
+
+.cs-go-back button {
+    border: none;
+    outline: none;
+    background-color: transparent;
+    margin-bottom: -2px;
+    margin-left: -8px;
+    cursor: pointer;
+    padding: 0px;
+}
+
+.cs-go-back p {
+    font-size: 14px;
+}
+
+.cs-page {
+    height: calc(100vh - 60px);
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+}
+
+#cs-img {
+    width: 60px;
+    height: auto;
+}
+
+.cs-top-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.cs-top-content h3 {
+    font-size: 14px;
+    font-weight: lighter;
+    margin-top: 10px;
+}
+
+.cs-top-content p {
+    font-size: 12px;
+    font-weight: lighter;
+    color: grey;
+    text-align: center;
+}
+
+.contact-support-msg {
+    width: 100%;
+    height: calc(100vh - 320px);
+    overflow-y: hidden;
+    overflow-y: scroll;
+}
+.message-row{
+    display: flex;
+    flex-direction: column;
+}
+#User {
+   float: left;
+}
+#Admin{
+    align-self: flex-end;
+}
+.msg-popup {
+    background: #F3F4F8;
+    width: fit-content;
+    max-width: 80%;
+    padding:5px 9px;
+    border-radius: 10px;
+    word-wrap: break-word;
+    margin-bottom: 10px;
+}
+
+.msg-popup p {
+    color: #4A90E2;
+    font-size: 12px;
+    font-weight: lighter;
+}
+.contact-support-msg::-webkit-scrollbar {
+    display: none;
+}
+
+.cs-form {
+    width: 100%;
+}
+
+.cs-form form {
+    display: flex;
+    flex-direction: column;
+}
+
+.cs-form form label {
+    font-size: 14px;
+    color: grey;
+    margin-bottom: 3px;
+}
+
+.cs-form form textarea {
+    padding: 10px;
+    width: calc(100% - 22px);
+    border-radius: 10px;
+    border: 1px solid lightgrey;
+    outline: none;
+    resize: none;
+    color: black;
+    font-weight: lighter;
+    font-size: 14px;
+}
+
+.cs-form form textarea:focus {
+    border: 1px solid #6C66EC;
+}
+
+.cs-form form button {
+    margin-top: 10px;
+    border: none;
+    outline: none;
+    background-color: #6C66EC;
+    color: white;
+    font-family: 14px;
+    height: 45px;
+    border-radius: 10px;
+    cursor: pointer;
+}
