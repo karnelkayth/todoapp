@@ -7,20 +7,19 @@ const TaskModel = require('../Models/TaskModel')
 router.get('/alltasks/:date', Middleware, async (req, res) => {
     const { id, role } = req.user
     const { date } = req.params
-    console.log(date)
 
     try {
 
         const user = await UserModel.findById({ _id: id })
         if (!user) return res.status(404).json({ message: 'User not found' })
         var tasks = null
-        if (date) {
+        if (date === 'alltask') {
+            tasks = await TaskModel.find({ userId: user?._id })
+        } else {
             tasks = await TaskModel.find({
                 userId: user?._id,
                 dueDate: date
             })
-        } else {
-            tasks = await TaskModel.find({ userId: user?._id })
         }
         return res.status(200).json({
             status: 200,

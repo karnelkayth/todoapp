@@ -15,7 +15,7 @@ const UserEditProfile = () => {
   const [profile, setprofile] = useState(user)
   const [callOnce, setcallOnce] = useState(false)
   // custom hook
-  const { patchdata, error, loading } = usePatch(`${URL}/updateprofile`, token)
+  const { patchdata, updateError} = usePatch(`${URL}/updateprofile`, token)
 
   const handlechanges = (e) => {
     const { name, value } = e.target
@@ -36,7 +36,7 @@ const UserEditProfile = () => {
     }, 2000);
   }
 
-  if (error) return alert(error)
+  if (updateError) return alert(updateError)
 
   return (
     <div className='edit-profile-page'>

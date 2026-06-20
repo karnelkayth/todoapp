@@ -12,12 +12,12 @@ router.delete('/deletetask/:taskId', Middleware, async (req, res) => {
 
         const user = await UserModel.findById({ _id: id })
         if (!user) return res.status(404).json({ message: 'User not found' })
-        const deleteTask = await TaskModel.findOneAndDelete({ userId: user?._id, taskId: taskId })
+        const deleteTask = await TaskModel.findOneAndDelete({ userId: user?._id, _id: taskId })
         if (!deleteTask) return res.status(500).json({ message: 'Internal server error' })
         return res.status(200).json({ message: 'Successfully delete' })
     } catch (error) {
-        return res.status(500).json({ message: 'Internal Server error' })
         console.log(error)
+        return res.status(500).json({ message: 'Internal Server error' })
     }
 
 })

@@ -1,7 +1,7 @@
 import React from 'react'
 import UserHeader from './UserHeader'
 import '../../Styles/AllTasks.css'
-import ChildShowTasks from './ChildShowTasks'
+import ChildShowTasks from './ChildAllTasks'
 
 const AllTasks = () => {
     return (

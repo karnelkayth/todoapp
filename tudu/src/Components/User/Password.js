@@ -2,6 +2,7 @@ import React, { useContext, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { ThemeContext } from '../../App'
 import usePatch from '../../Hooks/usePatch'
+import AlertPopUp from '../Shared/AlertPopUp'
 
 const Password = () => {
 
@@ -10,12 +11,13 @@ const Password = () => {
     const [callOnce, setcallOnce] = useState(true)
     const URL = process.env.REACT_APP_SERVER_URL
     const { token } = useContext(ThemeContext)
-    const { patchdata, error, loading } = usePatch(`${URL}/updatepassword`, token, setcallOnce)
-
     const [password, setpassword] = useState({
         oldPassword: '',
         newPassword: ''
     })
+
+    const { patchdata, updateError } = usePatch(`${URL}/updatepassword`, setcallOnce)
+
     const handleChanges = (e) => {
         const { name, value } = e.target
         setpassword(prev => ({ ...prev, [name]: value }))
@@ -23,17 +25,16 @@ const Password = () => {
 
     const updatePassword = async () => {
         if (!callOnce) return;
-        setcallOnce(false)
         const isempty = Object.values(password).some(val => val === '' || val === undefined || val === null)
         if (isempty) return alert('Enter both your old and new password.')
         if (password?.newPassword.length <= 8) return alert('Password must contain at least 8 characters.')
         patchdata(password)
     }
-    if (error) alert(error)
 
     return (
+        <>
+        <AlertPopUp error={updateError}/>
         <div className='email-update-page'>
-
             <div id='go-back-sec'>
                 <p onClick={() => Navigate(-1)}>Setting</p>
                 <span>/</span>
@@ -56,7 +57,7 @@ const Password = () => {
                             </div>
                             <div className='email-form'>
                                 <input type="tel" name="newPassword" id="" onChange={handleChanges} placeholder='Enter new password' />
-                                <button onClick={updatePassword} style={{ cursor: callOnce ? 'pointer' : 'not-allowed' }}>Confirm</button>
+                                <button onClick={() => updatePassword()} style={{ cursor: callOnce ? 'pointer' : 'not-allowed' }}>Confirm</button>
                             </div>
                         </>
                     }
@@ -64,6 +65,7 @@ const Password = () => {
             </div>
 
         </div>
+        </>
     )
 }
 

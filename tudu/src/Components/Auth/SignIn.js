@@ -1,15 +1,14 @@
 import React, { useState } from 'react'
 import '../../Styles/Auth.css'
-import ClearRoundedIcon from '@mui/icons-material/ClearRounded';
 import logo from '../../Images/logo.png'
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios'
-import { touchRippleClasses } from '@mui/material/ButtonBase';
 
 const SignIn = () => {
 
   const [callOnce, setcallOnce] = useState(true)
   const URL = process.env.REACT_APP_SERVER_URL
+  const Navigate = useNavigate()
   const [authData, setauthData] = useState({
     email: '',
     password: ''
@@ -28,16 +27,18 @@ const SignIn = () => {
       setcallOnce(false)
       const isempty = Object.values(authData).some(val => val === '' || val === undefined || val === null)
       if (isempty) return alert('Fill up all informations')
-      const res = await axios.post(`${URL}/signin`, { authData })
-      window.sessionStorage.setItem('tuduApp', res?.data?.token)
-      window.location.reload()
-
+      const res = await axios.post(`${URL}/signin`, { authData }, {
+        withCredentials: true
+      })
+      setTimeout(() => {
+        window.location.reload()
+      }, 2000);
     } catch (err) {
-      setcallOnce(true)
       const status = err?.response?.status
       if (status === 400 || status === 404 || status === 500) {
         alert(err?.response?.data?.message)
       }
+      setcallOnce(true)
     }
   }
 
@@ -55,6 +56,7 @@ const SignIn = () => {
             <div className='data'>
               <input type="email" name="email" id="" onChange={handlechanges} placeholder='Enter email' />
               <input type="password" name="password" id="" onChange={handlechanges} placeholder='Enter password' />
+              <Link to={'/forgot-password'} id='link'><p id='fp'>Forgot password?</p></Link>
             </div>
 
             <button type='submit' id='signup-btn' style={{ cursor: callOnce ? 'pointer' : 'not-allowed' }}>SignIn</button>

@@ -5,11 +5,13 @@ import { DatePicker } from 'antd';
 import axios from 'axios'
 import { ThemeContext } from '../../App'
 import TaskCategoryUi from './TaskCategoryUi';
+import AlertPopUp from '../Shared/AlertPopUp';
 
 const ChildCreateTasks = () => {
     const { role, user, token } = useContext(ThemeContext)
     const [callOnce, setcallOnce] = useState(true)
     const URL = process.env.REACT_APP_SERVER_URL
+    const [error, seterror] = useState()
     const [task, settask] = useState({
         title: '',
         des: '',
@@ -43,7 +45,7 @@ const ChildCreateTasks = () => {
         try {
             setcallOnce(false)
             const res = await axios.post(`${URL}/createtask`, { taskcopy }, {
-                headers: { Authorization: `Bearer ${token}` }
+                withCredentials: true
             })
             setTimeout(() => {
                 window.location.reload()
@@ -52,49 +54,54 @@ const ChildCreateTasks = () => {
             setcallOnce(true)
             const status = err?.response?.status
             if (status === 400 || status === 404 || status === 500) {
-                return alert(err?.response?.data?.message)
+                seterror(err?.response?.data?.message)
             }
         }
     }
+    setTimeout(() => {
+        seterror('')
+    }, 3000);
 
     return (
-        <div className='child-create-task'>
-            <div className='childcreate-task-page'>
-
-                <div className='c-new-task'>
-                    <h3>Create your new task</h3>
-                    <div className='inputs'>
-                        <form onSubmit={addnewTask}>
-                            <input type="text" name="title" id="task-input" placeholder='Title' onChange={handlechanges} />
-                            <textarea name='des' onChange={handlechanges} rows="2" placeholder='Description'></textarea>
-                            <TaskCategoryUi task={task} settask={settask} />
-                            <select name='repeat' onChange={handlechanges} style={{ width: '100%', marginTop: '10px' }}>
-                                <option value="">None</option>
-                                <option value="Daily">Daily</option>
-                                <option value="Weekly">Weekly</option>
-                                <option value="Monthly">Monthly</option>
-                            </select>
-                            <div className='timepick-sec'>
-                                <div className='time-pick'>
-                                    <label>Start time</label>
-                                    <TimePicker defaultValue={dayjs('12:08:23', 'HH:mm:ss')} name="starttime" onChange={(time, timestring) => handlePicker('starttime', timestring)} size="large" style={{ width: '180px', height: '30px' }} />
+        <>
+            <AlertPopUp error={error} />
+            <div className='child-create-task'>
+                <div className='childcreate-task-page'>
+                    <div className='c-new-task'>
+                        <h3>Create your new task</h3>
+                        <div className='inputs'>
+                            <form onSubmit={addnewTask}>
+                                <input type="text" name="title" id="task-input" placeholder='Title' onChange={handlechanges} />
+                                <textarea name='des' onChange={handlechanges} rows="2" placeholder='Description'></textarea>
+                                <TaskCategoryUi task={task} settask={settask} />
+                                <select name='repeat' onChange={handlechanges} style={{ width: '100%', marginTop: '10px' }}>
+                                    <option value="">None</option>
+                                    <option value="Daily">Daily</option>
+                                    <option value="Weekly">Weekly</option>
+                                    <option value="Monthly">Monthly</option>
+                                </select>
+                                <div className='timepick-sec'>
+                                    <div className='time-pick' style={{ width: '48%' }}>
+                                        <label>Start time</label>
+                                        <input type="time" name="starttime" id="" onChange={handlechanges} />
+                                    </div>
+                                    <div className='time-pick' style={{ width: '48%' }}>
+                                        <label>End time</label>
+                                        <input type="time" name="endtime" id="" onChange={handlechanges} />
+                                    </div>
                                 </div>
                                 <div className='time-pick'>
-                                    <label>Start time</label>
-                                    <TimePicker defaultValue={dayjs('12:08:23', 'HH:mm:ss')} format="HH:mm:ss" name='endtime' onChange={(time, timestring) => handlePicker('endtime', timestring)} size="large" style={{ width: '180px', height: '30px' }} />
+                                    <label>Due date</label>
+                                    <DatePicker name='duedate' onChange={(time, timestring) => handlePicker('duedate', timestring)} style={{ height: '30px' }} />
                                 </div>
-                            </div>
-                            <div className='time-pick'>
-                                <label>Due date</label>
-                                <DatePicker name='duedate' onChange={(time, timestring) => handlePicker('duedate', timestring)} style={{ height: '30px' }} />
-                            </div>
-                            <button type='submit' style={{ cursor: callOnce ? 'pointer' : 'not-allowed' }}>Add new task</button>
-                        </form>
+                                <button type='submit' style={{ cursor: callOnce ? 'pointer' : 'not-allowed' }}>Add new task</button>
+                            </form>
+                        </div>
                     </div>
-                </div>
 
+                </div>
             </div>
-        </div>
+        </>
     )
 }
 

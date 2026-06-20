@@ -6,6 +6,10 @@ const Schema = new mongoose.Schema({
         required: true,
         default: 'User'
     },
+    isActive: {
+        type: Boolean,
+        default: true,
+    },
     profile: {
         type: String,
         default: ''

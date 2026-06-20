@@ -7,10 +7,8 @@ const TaskModel = require('../Models/TaskModel')
 router.get('/todaytask', Middleware, async (req, res) => {
     const { id, role } = req.user
     const now = new Date();
-    const startOfDay = new Date(now);
-    startOfDay.setHours(0, 0, 0, 0);
-    const endOfDay = new Date(now);
-    endOfDay.setHours(23, 59, 59, 999);
+    const startOfDay = new Date(now).setHours(0, 0, 0, 0)
+    const endOfDay = new Date(now).setHours(23, 59, 59, 999);
 
     try {
 
@@ -18,7 +16,7 @@ router.get('/todaytask', Middleware, async (req, res) => {
         const user = await UserModel.findById({ _id: id })
         if (!user) return res.status(404).json({ message: 'User not found' })
         const tasks = await TaskModel.find({
-            userId: user?._id, 
+            userId: user?._id,
             createdAt: {
                 $gte: startOfDay,
                 $lte: endOfDay

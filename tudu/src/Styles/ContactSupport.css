@@ -1,5 +1,5 @@
 .contact-support {
-    width: 400px;
+    width:400px;
     padding: 10px;
     height: calc(100vh - 20px);
 }
@@ -29,7 +29,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-end;
 }
 
 #cs-img {
@@ -55,44 +55,13 @@
     color: grey;
     text-align: center;
 }
-
-.contact-support-msg {
-    width: 100%;
-    height: calc(100vh - 320px);
-    overflow-y: hidden;
-    overflow-y: scroll;
-}
-.message-row{
-    display: flex;
-    flex-direction: column;
-}
-#User {
-   float: left;
-}
-#Admin{
-    align-self: flex-end;
-}
-.msg-popup {
-    background: #F3F4F8;
-    width: fit-content;
-    max-width: 80%;
-    padding:5px 9px;
-    border-radius: 10px;
-    word-wrap: break-word;
-    margin-bottom: 10px;
-}
-
-.msg-popup p {
-    color: #4A90E2;
-    font-size: 12px;
-    font-weight: lighter;
-}
 .contact-support-msg::-webkit-scrollbar {
     display: none;
 }
 
 .cs-form {
     width: 100%;
+    margin-top: 100px;
 }
 
 .cs-form form {
@@ -100,10 +69,19 @@
     flex-direction: column;
 }
 
-.cs-form form label {
-    font-size: 14px;
-    color: grey;
-    margin-bottom: 3px;
+.cs-form input {
+    width: calc(100% - 22px);
+    border: 1px solid lightgrey;
+    border-radius: 10px;
+    font-weight: lighter;
+    font-size: 12px;
+    height: 40px;
+    padding: 0px 10px;
+}
+
+.cs-form input::placeholder {
+    font-family: 12px;
+    font-weight: lighter;
 }
 
 .cs-form form textarea {
@@ -115,7 +93,8 @@
     resize: none;
     color: black;
     font-weight: lighter;
-    font-size: 14px;
+    font-size: 12px;
+    margin-top: 10px;
 }
 
 .cs-form form textarea:focus {
@@ -132,4 +111,128 @@
     height: 45px;
     border-radius: 10px;
     cursor: pointer;
+}
+
+
+/* contactsupport card */
+.allissues-page {
+    width: 400px;
+    height: 100%;
+}
+
+.allissues-page h1 {
+    font-size: 20px;
+    font-family: 'flamebold';
+    font-weight: lighter;
+}
+
+.issue-card-sec {
+    margin-top: 10px;
+    height: calc(100% - 35px);
+}
+.issue-card {
+    padding: 10px;
+    width: calc(100% - 20px);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 50px;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+    cursor: pointer;
+    margin: 5px 0px;
+}
+
+.name-box {
+    width: 50px;
+    height: 50px;
+    border-radius: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: red;
+}
+
+.name-box span {
+    color: white;
+    font-size: 20px;
+    font-weight: lighter;
+    font-family: 'flamebold';
+}
+
+.ticket-content {
+    margin-left: 10px;
+}
+
+.ticket-content h1 {
+    font-weight: lighter;
+    font-size: 18px;
+}
+
+.ticket-content p {
+    color: #9A9AA3;
+    font-size: 12px;
+    font-weight: lighter;
+    overflow: hidden;
+    -webkit-line-clamp: 1;
+    text-overflow: ellipsis;
+    white-space: normal;
+    display: -webkit-box;
+    width: 100%;
+    -webkit-box-orient: vertical;
+}
+
+.status-createdAt {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-right: 5px;
+}
+
+.ticket-status {
+    padding: 3px 5px;
+    font-size: 10px;
+    font-weight: lighter;
+    border-radius: 5px;
+    margin-bottom: 4px;
+}
+
+.Pending {
+    color: #92400E;
+    background-color: #FEF3C7;
+}
+.Closed {
+    color: #374151;
+    background-color: #E5E7EB;
+}
+.Resolve {
+    color: #166534;
+    background-color: #DCFCE7;
+}
+.Open {
+    color: #1D4ED8;
+    background-color:#DBEAFE;
+}
+#no-tickets{
+    font-size: 14px;
+    font-weight: lighter;
+    font-family: 'flameregular';
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+/* admin contact support */
+.admin-contact-support-requests{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width:400px;
+    height:calc(100vh - 20px);
+    padding: 10px;
+}
+.cs-requests{
+    width: 100%;
+    height: calc(100% - 20px);
 }

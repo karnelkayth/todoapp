@@ -4,7 +4,8 @@ import WatchLaterRoundedIcon from '@mui/icons-material/WatchLaterRounded';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
-import { timeAlert } from '../User/TimeAlert'
+import { reminderTask } from '../User/Reminder'
+import WarningAmberRoundedIcon from '@mui/icons-material/WarningAmberRounded';
 
 const ShowTasks = ({ tasks, callTA }) => {
 
@@ -18,18 +19,22 @@ const ShowTasks = ({ tasks, callTA }) => {
     <div className='showtasks-page'>
       <div className='childtasks-page'>
         {tasks?.tasks.length !== 0 ? tasks?.tasks.map((task, index) => {
+          const reminder = callTA && reminderTask(task)
           return (
             <div className='task-popup' onClick={() => viewtask(task)}>
               <div className='title-status'>
                 <h2>{task?.title}</h2>
-                <span>{task?.status}</span>
+                <p className={`${task?.status}`}>{reminder < 0 ? 'Task Expired' : task?.status}</p>
               </div>
               <p id='task-des'>{task?.description}</p>
               <div className='time-periority'>
-                <div className='task-time'>
-                  <p><span><WatchLaterRoundedIcon fontSize='extrasmall' /></span>{task?.starttime}</p>
-                  <span id='hyphen'>-</span>
-                  <p><span><WatchLaterRoundedIcon fontSize='extrasmall' /></span>{task?.endtime}</p>
+                <div>
+                  <div className='task-time'>
+                    <p><span><WatchLaterRoundedIcon fontSize='extrasmall' /></span>{task?.starttime}</p>
+                    <span id='hyphen'>-</span>
+                    <p>{task?.endtime}</p>
+                  </div>
+                  {reminder > 0 && <p id='reminder-popup'>Only {reminder} minute left</p>}
                 </div>
                 <p className={`task-priority ${task?.category}`}>{task?.category}</p>
               </div>

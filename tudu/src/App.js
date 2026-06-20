@@ -1,44 +1,51 @@
 import './App.css';
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router } from "react-router-dom";
 import AppRoutes from './AppRoutes';
 import { createContext, useEffect, useState } from 'react';
 import axios from 'axios';
+import AccountSuspend from './Components/User/AccountSuspend';
+import './Components/Controller/AxiosIntercaptor'
 export const ThemeContext = createContext()
 
 function App() {
 
+  const URL = process.env.REACT_APP_SERVER_URL
   const [role, setrole] = useState()
   const [user, setuser] = useState()
-  const [loading, setloading] = useState(true)
-  const token = window.sessionStorage.getItem('tuduApp')
-  const URL = process.env.REACT_APP_SERVER_URL
+  const [isActive, setisActive] = useState(true)
+  const [loading, setloading] = useState(false)
+  const [logoBounce, setlogoBounce] = useState(true)
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const res = await axios.get(`${URL}/getdata`, {
-          headers: { Authorization: `Bearer ${token}` }
+          withCredentials: true
         })
         setuser(res?.data?.user)
         setrole(res?.data?.user?.Role)
-        setloading(false)
+        setisActive(res?.data?.user?.isActive)
+        setloading(true)
       } catch (error) {
         const status = error?.response?.status
-        if (status === 400 || status === 404 || status === 500 || status === 401) {
+        setloading(true)
+        if (status === 400 || status === 404 || status === 500) {
           alert(error?.response?.data?.message)
+        } else if (status === 403) {
+          setisActive(true)
         }
       }
     }
-    if (token && URL) {
+    if (URL) {
       fetchData()
     }
-  }, [token, URL])
-
-  // if (loading) return <h1>Loading...</h1>
+  }, [URL])
+  if (!isActive) return <AccountSuspend />
+  if(!loading) return <h1>Loading...</h1>
 
   return (
     <div className="App">
-      <ThemeContext.Provider value={{ token, user, role }}>
+      <ThemeContext.Provider value={{ user, role }}>
         <Router>
           <AppRoutes />
         </Router>

@@ -4,15 +4,15 @@ import { ThemeContext } from '../../App'
 import { useState, useContext } from 'react'
 import ShowTasks from './ShowTasks'
 import '../../Styles/ShowTasks.css'
+import AlertPopUp from '../Shared/AlertPopUp'
 
 const TodayTasks = () => {
     const { user, token } = useContext(ThemeContext)
     const [callTA, setcallTA] = useState(true)
     const URL = process.env.REACT_APP_SERVER_URL
-    const { data, error, loading } = useGet(`${URL}/todaytask`, token)
-
+    const { data, error, loading } = useGet(`${URL}/todaytask`)
     if (loading) return <p>Loading...</p>
-    if (error) return <p>{error}</p>
+    if(error) return <AlertPopUp error={error}/>
     
     return (
         <div className='todaytasks'>

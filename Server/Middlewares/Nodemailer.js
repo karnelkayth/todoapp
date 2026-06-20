@@ -2,8 +2,7 @@ const express = require('express')
 const nodemailer = require('nodemailer')
 const dotenv = require('dotenv').config()
 
-const sendmail = async (user, otp) => {
-
+const sendmail = async (user, url, subject) => {
 
     const transporter = nodemailer.createTransport({
         service: "gmail",
@@ -18,28 +17,17 @@ const sendmail = async (user, otp) => {
         const info = await transporter.sendMail({
             from: `${process.env.APP_EMAIL_ADDRESS}`, // sender address
             to: `${user?.email}`, // list of recipients
-            subject: "tudo app", // subject line
-            text: "tudo app trial", // plain text body
+            subject: `${subject}`, // subject line
             html: `
-            <h1 style="margin:0;">OTP Verification</h1>
-            <p style="
-            color:#666;
-            font-size:15px;
-            line-height:1.6;
-          ">
-            Use the verification code below to complete your sign in.
-            This OTP is valid for only 2 minutes.
-          </p>
-          <h1 style="color: #6C66EC;">${otp}</h1>
-            `, // HTML body
+                    <p style="color: #6C66EC;">${url}</p>
+            `,
         });
         return {
             status: true,
             message: 'Mail send successfully'
         }
-        
+
     } catch (error) {
-        console.log(error)
         return {
             status: false,
             message: `Error while sending mail ${error}`

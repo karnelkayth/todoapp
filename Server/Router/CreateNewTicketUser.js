@@ -16,8 +16,11 @@ router.post('/support/message', Middleware, async (req, res) => {
             userId: user?._id,
             email: user?.email,
             name: user?.name,
-            role: user?.Role,
-            message: message
+            issue: message?.issue,
+            messages: {
+                message: message?.message,
+                role: user?.Role
+            }
         })
         if (!create) return res.status(500).json({ message: 'Unable to create resource internal server error' })
         return res.status(200).json({ message: 'Resource successfully created' })

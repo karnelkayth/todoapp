@@ -35,6 +35,8 @@ const Setting = () => {
                             <span>Support</span>
                             <div className='setting-child-popup'>
                                 <Link to={'/setting/contactSupport'} id='link'><p>Contact support</p></Link>
+                                <Link to={'/announcements'} id='link'><p>Announcements</p></Link>
+                                <Link to={'/contactsupport/issues'} id='link'><p>Contact support requests</p></Link>
                             </div>
                         </div>
                         <button id='signout-btn'>Signout</button>

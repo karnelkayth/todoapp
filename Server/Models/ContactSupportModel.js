@@ -5,6 +5,11 @@ const Schema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         required: true
     },
+    status: {
+        type: String,
+        default: 'Pending',
+        enum: ['Pending', 'Open', 'Closed', 'Resolved']
+    },
     email: {
         type: String,
         required: true
@@ -13,17 +18,12 @@ const Schema = new mongoose.Schema({
         type: String,
         required: true
     },
-    message: {
+    issue: {
         type: String,
         required: true
     },
-    role: {
-        type: String,
-        required: true
-    },
-    status: {
-        type: String,
-        default: 'Pending'
+    messages: {
+        type: Array
     },
     createdAt: {
         type: Date,
@@ -31,5 +31,5 @@ const Schema = new mongoose.Schema({
     }
 })
 
-const Model = mongoose.model('contectsupports', Schema)
+const Model = mongoose.model('contactsupports', Schema)
 module.exports = Model

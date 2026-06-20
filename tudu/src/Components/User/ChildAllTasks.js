@@ -3,26 +3,25 @@ import { ThemeContext } from '../../App'
 import useGet from '../../Hooks/useGet'
 import ShowTasks from './ShowTasks'
 import Calendar from './Calendar'
+import AlertPopUp from '../Shared/AlertPopUp'
 
 const ChildShowTasks = () => {
 
-    const [date, setsltDate] = useState()
-    const { user, token } = useContext(ThemeContext)
+    const [date, setsltDate] = useState('alltask')
+    const { user } = useContext(ThemeContext)
     const URL = process.env.REACT_APP_SERVER_URL
-    const { data, loading, error } = useGet(`${URL}/alltasks/${date}`, token)
-
+    const { data, loading, error } = useGet(`${URL}/alltasks/${date}`)
     if (loading) return <p>Loading...</p>
-    if (error) return alert(error)
+    if (error) return <AlertPopUp error={error} />
 
     return (
         <div className='all-task-page'>
             <div className='childall-task-page'>
-
                 {/* header */}
                 <div className='childalltask-header'>
                     <h3>All Tasks</h3>
                     {/* <button id='clear-btn'>Clear</button> */}
-                    <Calendar setsltDate={setsltDate}/>
+                    <Calendar setsltDate={setsltDate} />
                 </div>
 
                 <div className='show-all-tasks-sec'>

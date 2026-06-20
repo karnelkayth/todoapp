@@ -8,47 +8,49 @@ import WidgetsRoundedIcon from '@mui/icons-material/WidgetsRounded';
 import { Link } from 'react-router-dom';
 import { ThemeContext } from '../../App';
 import CalendarMonthRoundedIcon from '@mui/icons-material/CalendarMonthRounded';
+import CampaignRoundedIcon from '@mui/icons-material/CampaignRounded';
+import SendRoundedIcon from '@mui/icons-material/SendRounded';
+import SignOutApi from '../Controller/SignOutApi';
 
 const UserHeader = () => {
 
-    const {role, user, token } = useContext(ThemeContext) 
-
-    // signout
-    const signout = () => {
-        window.sessionStorage.clear()
-        window.location.reload()
-    }
+    const { role, user } = useContext(ThemeContext)
 
     return (
         <div className='user-header'>
 
-            <img src={logo} alt="" id='logo'/>
+            <Link to={'/Flowtic'} id='links'>
+            <img src={logo} alt="" id='logo' />
+            </Link>
 
             <div className='nav-links'>
                 {/* <div>
-                    <Link to={'/home'} id='links'><p><HomeRoundedIcon style={{color:'white'}}/></p></Link>
+                    <Link to={'/home'} id='links'><p><HomeRoundedIcon style={{ color: 'black' }} /></p></Link>
                 </div> */}
                 <div>
-                    <Link to={'/home'} id='links'><p><HomeRoundedIcon style={{color:'black'}}/></p></Link>
+                    <Link to={'/alltasks'} id='links'><p><WidgetsRoundedIcon style={{ color: 'black' }} /></p></Link>
                 </div>
                 <div>
-                    <Link to={'/alltasks'} id='links'><p><WidgetsRoundedIcon style={{color:'black'}}/></p></Link>
+                    <Link to={'/daily/weekly/monthly'} id='links'><p><CalendarMonthRoundedIcon style={{ color: 'black' }} /></p></Link>
                 </div>
                 <div>
-                    <Link to={'/daily/weekly/monthly'} id='links'><p><CalendarMonthRoundedIcon style={{color:'black'}}/></p></Link>
+                    <Link to={'/createtask'} id='links'><p><AddRoundedIcon style={{ color: 'black' }} /></p></Link>
                 </div>
                 <div>
-                    <Link to={'/createtask'} id='links'><p><AddRoundedIcon style={{color:'black'}}/></p></Link>
+                    <Link to={'/contactsupport/issues'} id='links'><p><SendRoundedIcon style={{ color: 'black', transform: 'rotate(-45deg)' }} /></p></Link>
                 </div>
                 <div>
-                    <Link to={'/setting'} id='links'><p><SettingsRoundedIcon style={{color:'black'}}/></p></Link>
+                    <Link to={'/setting'} id='links'><p><SettingsRoundedIcon style={{ color: 'black' }} /></p></Link>
+                </div>
+                <div>
+                    <Link to={'/announcements'} id='links'><p><CampaignRoundedIcon style={{ color: 'black' }} /></p></Link>
                 </div>
             </div>
 
             <div className='btns'>
                 {
-                    !user?<button>SignUp</button>:
-                <button onClick={signout}>SignOut</button>
+                    !user ? <button>SignUp</button> :
+                        <button onClick={()=>SignOutApi()}>SignOut</button>
                 }
             </div>
 

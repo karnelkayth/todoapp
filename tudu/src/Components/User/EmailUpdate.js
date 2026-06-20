@@ -2,43 +2,45 @@ import React, { useContext, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import { ThemeContext } from '../../App'
+import AlertPopUp from '../Shared/AlertPopUp'
 //setting css use inside
 
 const EmailUpdate = () => {
 
     const Navigate = useNavigate()
     const URL = process.env.REACT_APP_SERVER_URL
-    const { token } = useContext(ThemeContext)
+    const { token, user} = useContext(ThemeContext)
     const [isActive, setisActive] = useState(false)
     const [callOnce, setcallOnce] = useState(false)
     const [isotp, setisotp] = useState(false) //is otp send or not
+    const [error, seterror] = useState()
 
-    const [newmail, setnewmail] = useState({
+    const [newemail, setnewemail] = useState({
         email: '',
         otp: ''
     })
 
     const handlechange = (e) => {
         const { name, value } = e.target
-        setnewmail(prev => ({ ...prev, [name]: value }))
+        setnewemail(prev => ({ ...prev, [name]: value }))
         setcallOnce(true)
     }
 
     const handleemail = async (e) => {
         e.preventDefault()
         if (!callOnce) return;
-        if (!newmail?.email) return alert('Enter a new email to proceed')
+        if (!newemail?.email) return alert('Enter a new email to proceed')
         try {
             setcallOnce(false)
-            const res = await axios.post(`${URL}/requestotp`, {}, {
-                headers: { Authorization: `Bearer ${token}` }
+            const res = await axios.post(`${URL}/requestotp`, { newemail }, {
+                withCredentials: true
             })
             setcallOnce(true)
             setisotp(true)
         } catch (error) {
             const status = error?.response?.status
-            if (status === 404 || status === 500) {
-                alert(error?.response?.data?.message)
+            if (status === 404 || status === 500 || status === 401) {
+                seterror(error?.response?.data?.message)
             }
             setcallOnce(true)
         }
@@ -46,26 +48,31 @@ const EmailUpdate = () => {
 
     const verifyOtp = async () => {
         if (!callOnce) return;
-        const isempty = Object.values(newmail).some(val => val === '' || val === undefined || val === null)
+        const isempty = Object.values(newemail).some(val => val === '' || val === undefined || val === null)
         if (isempty) return alert('Email and otp cannot be empty')
         try {
             setcallOnce(false)
-            const res = await axios.patch(`${URL}/requestEmailupdate`, { newmail }, {
-                headers: { Authorization: `Bearer ${token}` }
+            const res = await axios.patch(`${URL}/requestEmailupdate`, { newemail }, {
+                withCredentials: true
             })
             setTimeout(() => {
                 window.location.reload()
             }, (2000));
         } catch (error) {
             const status = error?.response?.status
-            if (status === 404 || status === 400 || status === 500) {
-                alert(error?.response?.data?.message)
+            if (status === 404 || status === 400 || status === 500 || status === 401) {
+                seterror(error?.response?.data?.message)
             }
             setcallOnce(true)
         }
     }
+    setTimeout(() => {
+        seterror('')
+    }, (3000));
 
     return (
+        <>
+        <AlertPopUp error={error}/>
         <div className='email-update-page'>
 
             <div id='go-back-sec'>
@@ -79,7 +86,7 @@ const EmailUpdate = () => {
                     <div className='email-content'>
                         <div className='title-email'>
                             <h3>Email</h3>
-                            <p>example@gmail.com</p>
+                            <p>{user?.email}</p>
                         </div>
                         <button id='editbtn' onClick={() => setisActive(prev => !prev)}>{!isActive ? 'Edit' : 'Cancel'}</button>
                     </div>
@@ -100,6 +107,7 @@ const EmailUpdate = () => {
             </div>
 
         </div >
+        </>
     )
 }
 

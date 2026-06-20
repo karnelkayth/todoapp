@@ -25,13 +25,16 @@ const SignUp = () => {
     if (isempty) return alert('Fill up all informations')
     try {
       setcallOnce(false)
-      const res = await axios.post(`${URL}/signup`, { authData })
-      window.sessionStorage.setItem('tuduApp', res?.data?.token)
-      window.location.reload()
+      const res = await axios.post(`${URL}/signup`, { authData }, {
+        withCredentials: true
+      })
+      setTimeout(() => {
+        window.location.reload()
+      }, 2000);
     } catch (err) {
       setcallOnce(true)
       const status = err?.response?.status
-      if(status === 400 || status === 409 || status === 500){
+      if (status === 400 || status === 409 || status === 500) {
         alert(err?.response?.data?.message)
       }
     }
@@ -49,16 +52,15 @@ const SignUp = () => {
 
           <form onSubmit={handleSignup}>
             <div className='data'>
-              <input type="text" name="name" id="" onChange={handlechanges} placeholder='Your name'/>
+              <input type="text" name="name" id="" onChange={handlechanges} placeholder='Your name' />
               <input type="email" name="email" id="" onChange={handlechanges} placeholder='Enter email' />
               <input type="password" name="password" id="" onChange={handlechanges} placeholder='Create password' />
             </div>
 
             <button id='signup-btn' type='submit'>SignUp</button>
           </form>
-          <p id='alr-acc'>Already have an account? <Link to={'/signin'}><strong style={{ color: '#6C66EC', cursor: 'pointer' }}>SignIn</strong></Link></p>
+          <p id='alr-acc'>Already have an account? <Link to={'/signin'}><strong style={{ color: '#6C66EC', cursor: callOnce ? 'pointer' : 'not-allowed' }}>SignIn</strong></Link></p>
         </div>
-
       </div>
     </div>
   )

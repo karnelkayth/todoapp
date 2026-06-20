@@ -28,7 +28,8 @@
 .profile-content-page {
     margin-top: 10px;
 }
-.name-popup{
+
+.name-popup {
     width: 70px;
     height: 70px;
     background-color: black;
@@ -38,10 +39,12 @@
     align-items: center;
     justify-content: center;
 }
-.name-popup h1{
+
+.name-popup h1 {
     font-family: 'flamebold';
     font-size: 40px;
 }
+
 .input-box {
     margin: 10px 0px;
     padding: 10px;
@@ -133,4 +136,93 @@
     font-size: 20px;
     font-family: 'flamebold';
     font-weight: lighter;
+}
+
+
+
+/* admin search user profile */
+.a-user-profile {
+    width: 100%;
+    height: calc(100vh - 30px);
+    padding: 15px 0px;
+    display: flex;
+    justify-content: center;
+}
+
+.tn-a-user-profile {
+    width: 600px;
+    height: 100px;
+}
+
+.top-profile-data {
+    margin-top: 15px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.name-letter {
+    width: 100px;
+    height: 100px;
+    background-color: red;
+    border-radius: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.name-letter h1 {
+    font-size: 50px;
+    font-weight: lighter;
+    color: white;
+    font-family: 'flamebold';
+}
+.personal-info{
+    margin-left: 15px;
+}
+.personal-info h1{
+    font-size: 25px;
+    font-family: 'flamebold';
+    font-weight: lighter;
+}
+.personal-info p{
+    font-size: 12px;
+    color:black;
+    font-weight: lighter;
+}
+.personal-info span{
+   font-size: 12px;
+   margin-top: 10px;
+   font-weight: lighter;
+   color: #9A9AA3;
+}
+.user-active-status button{
+    padding: 10px 20px;
+    border-radius: 15px;
+    border: none;
+    outline: none;
+    font-size: 14px;
+    cursor: pointer;
+    outline: none;
+    background-color: red;
+    color: white;
+}
+.user-task-data{
+    margin-top: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.user-task-data div{
+    width: 150px;
+    height: 60px;
+    border-radius: 10px;
+    background-color:white;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+}
+.user-task-data div p{
+    font-size: 14px;
 }

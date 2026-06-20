@@ -5,14 +5,16 @@ import { ThemeContext } from '../../App'
 import axios from 'axios'
 import { LoadingOutlined } from '@ant-design/icons';
 import { Flex, Spin } from 'antd';
+import AlertPopUp from '../Shared/AlertPopUp';
 
 const DeleteAccount = () => {
 
     const Navigate = useNavigate()
     const [callOnce, setcallOnce] = useState(true)
-    const { token, user } = useContext(ThemeContext)
+    const { user } = useContext(ThemeContext)
     const URL = process.env.REACT_APP_SERVER_URL
     const [password, setpassword] = useState()
+    const [error, seterror] = useState()
 
     const deleteAccount = async () => {
         if (!callOnce) return;
@@ -20,7 +22,7 @@ const DeleteAccount = () => {
         try {
             setcallOnce(false)
             const res = await axios.delete(`${URL}/deleteaccount/${user?._id}`, {
-                headers: { Authorization: `Bearer ${token}` },
+                withCredentials: true,
                 data: {
                     password: password
                 }
@@ -33,37 +35,43 @@ const DeleteAccount = () => {
         } catch (error) {
             const status = error?.response?.status
             if (status === 404 || status === 500 || status === 401) {
-                alert(error?.response?.data?.message || 'Something went wrong')
+                seterror(error?.response?.data?.message || 'Something went wrong')
             }
             setcallOnce(true)
         }
     }
+    setTimeout(() => {
+        seterror('')
+    }, 3000);
 
     return (
-        <div className='email-update-page'>
+        <>
+            <AlertPopUp error={error} />
+            <div className='email-update-page'>
 
-            <div id='go-back-sec'>
-                <p onClick={() => Navigate(-1)}>Setting</p>
-                <span>/</span>
-                <p>Delete account</p>
-            </div>
-
-            <div className='email-main-sec'>
-                <div className='warning-popup'>
-                    <span style={{ marginRight: '10px' }}><WarningRoundedIcon style={{ color: 'red' }} /></span>
-                    <p style={{ color: 'red', fontSize: '14px' }}>Please read carefully before deleting</p>
+                <div id='go-back-sec'>
+                    <p onClick={() => Navigate(-1)}>Setting</p>
+                    <span>/</span>
+                    <p>Delete account</p>
                 </div>
-                <div className='note'>
-                    <p>This will erase your account and all data permanantly from our server i cannot be undone</p>
-                    <input type="password" name="" id="dlt-password" onChange={(e) => setpassword(e.target.value)} placeholder='Enter password' />
-                    <button id='delete-account' onClick={deleteAccount} style={{ cursor: callOnce ? 'pointer' : 'not-allowed' }}>
-                        <span style={{ marginRight: '7px' }}>{callOnce ? '' : <Spin indicator={<LoadingOutlined spin />} size="small" style={{ color: 'white' }} />}</span>
-                        Delete my account
-                    </button>
-                </div>
-            </div>
 
-        </div >
+                <div className='email-main-sec'>
+                    <div className='warning-popup'>
+                        <span style={{ marginRight: '10px' }}><WarningRoundedIcon style={{ color: 'red' }} /></span>
+                        <p style={{ color: 'red', fontSize: '14px' }}>Please read carefully before deleting</p>
+                    </div>
+                    <div className='note'>
+                        <p>This will erase your account and all data permanantly from our server i cannot be undone</p>
+                        <input type="password" name="" id="dlt-password" onChange={(e) => setpassword(e.target.value)} placeholder='Enter password' />
+                        <button id='delete-account' onClick={deleteAccount} style={{ cursor: callOnce ? 'pointer' : 'not-allowed' }}>
+                            <span style={{ marginRight: '7px' }}>{callOnce ? '' : <Spin indicator={<LoadingOutlined spin />} size="small" style={{ color: 'white' }} />}</span>
+                            Delete my account
+                        </button>
+                    </div>
+                </div>
+
+            </div >
+        </>
     )
 }
 

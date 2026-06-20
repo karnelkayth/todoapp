@@ -77,6 +77,9 @@
 .time-pick label{
     font-size: 14px;
 }
+.time-pick input{
+    margin-top: 5px;
+}
 .timepicker{
     display: flex;
     align-items: center;

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 
-const useGet = (URL, token) => {
+const useGet = (URL) => {
     const [data, setdata] = useState()
     const [error, seterror] = useState()
     const [loading, setloading] = useState(true)
@@ -11,24 +11,24 @@ const useGet = (URL, token) => {
         const fetchdata = async () => {
             try {
                 const res = await axios.get(URL, {
-                    headers: { Authorization: `Bearer ${token}` }
+                    withCredentials: true
                 })
                 setdata(res?.data)
                 setloading(false)
             } catch (error) {
                 const status = error?.response?.status
-                if (status === 404 || status === 500) {
+                if (status === 404 || status === 500 || status === 403) {
                     seterror(error?.response?.data?.message)
                 }
+                setloading(false)
             }
         }
-
-        if (URL && token) {
+        if (URL) {
             fetchdata()
         }
 
-    }, [URL, token])
-    return { data, error, loading }
+    }, [URL])
+    return { data, setdata, error, loading }
 }
 
 export default useGet

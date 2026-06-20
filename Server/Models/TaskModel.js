@@ -12,7 +12,8 @@ const Schema = new mongoose.Schema({
     },
     status: {
         type: String,
-        default: 'pending'
+        default: 'Pending',
+        enum: ['Pending', 'In progress', 'Completed', 'Cancelled']
     },
     title: {
         type: String,
@@ -44,7 +45,7 @@ const Schema = new mongoose.Schema({
     },
     createdAt: {
         type: Date,
-        default: new Date().toISOString()
+        default: new Date
     }
 })
 
